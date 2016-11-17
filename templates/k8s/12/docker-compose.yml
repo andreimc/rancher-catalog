@@ -16,7 +16,7 @@ kubelet:
         - --cluster-dns=169.254.169.250
         - --cluster-domain=cluster.local
         - --network-plugin=cni
-        - --network-plugin-dir=/etc/cni/net.d
+        - --network-plugin-dir=/etc/cni/default.d
     image: rancher/k8s:v1.4.6-rancher1
     volumes:
         - /run:/run
@@ -43,7 +43,6 @@ proxy:
         - --master=http://master
         - --v=2
         - --healthz-bind-address=0.0.0.0
-        - --proxy-mode=userspace
     image: rancher/k8s:v1.4.6-rancher1
     privileged: true
     net: host
@@ -58,6 +57,7 @@ etcd:
         io.rancher.sidekicks: data
     environment:
         RANCHER_DEBUG: 'true'
+        EMBEDDED_BACKUPS: 'true'
         BACKUP_PERIOD: 15m
         BACKUP_RETENTION: 24h
     volumes:
@@ -78,7 +78,6 @@ data:
 kubernetes:
     labels:
         io.rancher.scheduler.affinity:host_label_soft: orchestration=true
-        io.rancher.scheduler.affinity:host_label_soft_ne: etcd=true
         io.rancher.container.create_agent: "true"
         io.rancher.container.agent.role: environmentAdmin
         io.rancher.sidekicks: kube-hostname-updater
@@ -110,7 +109,6 @@ kube-hostname-updater:
 kubectld:
     labels:
         io.rancher.scheduler.affinity:host_label_soft: orchestration=true
-        io.rancher.scheduler.affinity:host_label_soft_ne: etcd=true
         io.rancher.k8s.kubectld: "true"
         io.rancher.container.create_agent: "true"
         io.rancher.container.agent_service.kubernetes_stack: "true"
@@ -129,7 +127,6 @@ scheduler:
     image: rancher/k8s:v1.4.6-rancher1
     labels:
         io.rancher.scheduler.affinity:host_label_soft: orchestration=true
-        io.rancher.scheduler.affinity:host_label_soft_ne: etcd=true
     links:
         - kubernetes:master
 
