@@ -23,8 +23,6 @@ kubelet:
         - /var/run:/var/run
         - /var/lib/docker:/var/lib/docker
         - /var/lib/kubelet:/var/lib/kubelet:shared
-        - rancher-cni-driver:/etc/cni:ro
-        - rancher-cni-driver:/opt/cni:ro
         - /dev:/host/dev
     net: host
     pid: host
