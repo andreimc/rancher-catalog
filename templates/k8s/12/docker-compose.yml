@@ -16,15 +16,13 @@ kubelet:
         - --cluster-dns=169.254.169.250
         - --cluster-domain=cluster.local
         - --network-plugin=cni
-        - --network-plugin-dir=/etc/cni/default.d
+        - --network-plugin-dir=/etc/cni/net.d
     image: rancher/k8s:v1.4.6-rancher1
     volumes:
         - /run:/run
         - /var/run:/var/run
         - /var/lib/docker:/var/lib/docker
         - /var/lib/kubelet:/var/lib/kubelet:shared
-        - rancher-cni-driver:/etc/cni:ro
-        - rancher-cni-driver:/opt/cni:ro
         - /dev:/host/dev
     net: host
     pid: host
